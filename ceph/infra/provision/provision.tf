@@ -85,7 +85,7 @@ resource "xenorchestra_vm" "ceph1" {
 
     disk {
       sr_id = "824ab36d-4e40-8dbf-913c-5d18cf31f4c2"
-      name_label = "ceph-0-os"
+      name_label = "ceph-1-os"
       size = 107374182400 
     }
 
@@ -115,7 +115,37 @@ resource "xenorchestra_vm" "ceph2" {
 
     disk {
       sr_id = "824ab36d-4e40-8dbf-913c-5d18cf31f4c2"
-      name_label = "ceph-0-os"
+      name_label = "ceph-2-os"
+      size = 107374182400 
+    }
+
+    tags = [
+      "CentOS",
+      "Ceph",
+    ]
+}
+
+data "xenorchestra_cloud_config" "ceph3_config" {
+  name = "ceph3"
+}
+
+resource "xenorchestra_vm" "ceph3" {
+    memory_max = 17179869184
+    cpus  = 4
+    cloud_config = data.xenorchestra_cloud_config.ceph3_config.template
+    name_label = "ceph3"
+    name_description = ""
+    template = data.xenorchestra_template.template.id
+
+    # Prefer to run the VM on the primary pool instance
+    affinity_host = data.xenorchestra_pool.pool.master
+    network {
+      network_id = data.xenorchestra_network.net.id
+    }
+
+    disk {
+      sr_id = "824ab36d-4e40-8dbf-913c-5d18cf31f4c2"
+      name_label = "ceph-3-os"
       size = 107374182400 
     }
 

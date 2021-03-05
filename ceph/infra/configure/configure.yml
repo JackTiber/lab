@@ -2,12 +2,21 @@
 - name: Configure Ceph Host(s)
   become: true
   hosts: ceph
-  vars:
-    docker_edition: 'ce'
-    docker_service_state: started
-    docker_service_enabled: true
-    docker_install_compose: no
-    docker_users:
-      - centos
-  roles:
-    - geerlingguy.docker
+  tasks:
+    - name: Install Lvm2
+      dnf:
+        name: lvm2
+        state: present
+    - name: Install Python3
+      dnf:
+        name: python3
+        state: present
+    - name: Install Podman
+      dnf:
+        name: podman
+        state: present
+    - name: Disable Firewalld
+      systemd:
+        name: firewalld
+        state: stopped
+
