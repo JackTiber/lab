@@ -1,0 +1,8 @@
+#network
+version: 1
+
+#cloud-config
+hostname: ceph0 # Replace with hostname to match the VM being created and add to xoa prior to running.
+fqdn: ceph0.localdomain
+ssh_authorized_keys:
+  - ssh-rsa <sshkey> # Add SSH Keys to use with default user of cloud image
